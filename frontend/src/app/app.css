@@ -1,0 +1,301 @@
+
+:host {
+  display: block;
+  background: #090b10;
+  color: #f5f5f5;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.header {
+  height: 76px;
+  padding: 0 8%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #10131b;
+  border-bottom: 1px solid #252a35;
+}
+
+.logo {
+  color: #ffffff;
+  font-size: 23px;
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: 1px;
+}
+
+.logo span {
+  color: #3b82f6;
+}
+
+nav {
+  display: flex;
+  gap: 32px;
+}
+
+nav a {
+  color: #c4c8d1;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+nav a:hover {
+  color: #3b82f6;
+}
+
+.hero {
+  min-height: 540px;
+  padding: 100px 8%;
+  display: flex;
+  align-items: center;
+  background:
+    radial-gradient(circle at 80% 50%, #142544 0%, transparent 40%),
+    #090b10;
+}
+
+.hero-content {
+  max-width: 650px;
+}
+
+.tag {
+  color: #60a5fa;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.hero h1 {
+  font-size: clamp(42px, 6vw, 68px);
+  line-height: 1.08;
+  margin: 22px 0;
+}
+
+.hero p,
+.section-heading p,
+.contact p {
+  color: #a1a7b4;
+  line-height: 1.8;
+}
+
+.hero p {
+  max-width: 480px;
+  font-size: 17px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+  display: inline-block;
+  padding: 14px 22px;
+  border-radius: 7px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+}
+
+.btn-secondary {
+  border: 1px solid #414958;
+  color: white;
+}
+
+.btn-secondary:hover {
+  border-color: #3b82f6;
+}
+
+.services {
+  padding: 90px 8%;
+  background: #10131b;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.section-heading h2,
+.contact h2 {
+  font-size: 34px;
+  margin: 14px 0;
+}
+
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+}
+
+.service-card {
+  padding: 30px;
+  background: #171c27;
+  border: 1px solid #292f3c;
+  border-radius: 12px;
+  transition: 0.2s;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  border-color: #3b82f6;
+}
+
+.service-icon {
+  color: #60a5fa;
+  font-size: 30px;
+}
+
+.service-card h3 {
+  margin-top: 20px;
+}
+
+.service-card p {
+  color: #a1a7b4;
+  line-height: 1.7;
+  font-size: 14px;
+}
+
+.contact {
+  padding: 90px 8%;
+  text-align: center;
+  background: #090b10;
+}
+
+.contact p {
+  margin-bottom: 30px;
+}
+
+footer {
+  padding: 25px;
+  text-align: center;
+  color: #777f8d;
+  background: #10131b;
+  border-top: 1px solid #252a35;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .header {
+    padding: 0 5%;
+  }
+
+  nav {
+    gap: 14px;
+  }
+
+  nav a {
+    font-size: 12px;
+  }
+
+  .hero {
+    padding: 80px 6%;
+  }
+
+  .services {
+    padding: 70px 6%;
+  }
+
+  .service-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-heading h2,
+  .contact h2 {
+    font-size: 27px;
+  }
+}
+
+@media (max-width: 380px) {
+  .header {
+    flex-direction: column;
+    height: auto;
+    padding: 18px 10px;
+    gap: 15px;
+  }
+}
+
+/* Refinamento minimalista */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.hero {
+  min-height: 580px;
+}
+
+.hero h1 {
+  font-weight: 750;
+  letter-spacing: -2px;
+}
+
+.service-card {
+  background: #12151d;
+  border: 1px solid #242936;
+  border-radius: 10px;
+  padding: 32px;
+  box-shadow: none;
+}
+
+.service-card:hover {
+  transform: translateY(-3px);
+  border-color: #3b82f6;
+}
+
+.service-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1b2b45;
+  border-radius: 8px;
+  color: #60a5fa;
+}
+
+.contact {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.btn-primary,
+.btn-secondary {
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+@media (max-width: 600px) {
+  .hero h1 {
+    letter-spacing: -1px;
+  }
+
+  .hero-buttons {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-buttons a {
+    text-align: center;
+  }
+}
