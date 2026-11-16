@@ -299,3 +299,154 @@ footer {
     text-align: center;
   }
 }
+
+/* Títulos das categorias */
+.category-group {
+  margin-bottom: 55px;
+}
+
+.category-title {
+  color: #60a5fa;
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+  padding-left: 14px;
+  border-left: 4px solid #3b82f6;
+}
+
+.category-description {
+  color: #a1a7b4;
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 22px;
+}
+
+/* Ajustes para celulares */
+@media (max-width: 600px) {
+  .category-group {
+    margin-bottom: 42px;
+  }
+
+  .category-title {
+    font-size: 23px;
+  }
+
+  .category-description {
+    font-size: 14px;
+  }
+}
+
+/* Refinamento dos cartões de serviços */
+.service-card {
+  background: #171f2d;
+  border: 1px solid #2b3b52;
+  border-radius: 12px;
+  padding: 26px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.service-card h3 {
+  color: #f1f5f9;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 18px 0 10px;
+}
+
+.service-card p {
+  color: #b6c1d1;
+  font-size: 15px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.service-card .service-icon {
+  color: #60a5fa;
+  background: #203653;
+  border: 1px solid #31547f;
+  border-radius: 10px;
+}
+
+/* Efeito para computadores */
+@media (hover: hover) {
+  .service-card:hover {
+    transform: translateY(-4px);
+    border-color: #3b82f6;
+  }
+}
+
+/* Ajustes para celulares */
+@media (max-width: 600px) {
+  .service-card {
+    padding: 22px;
+  }
+
+  .service-card h3 {
+    font-size: 17px;
+  }
+
+  .service-card p {
+    font-size: 14px;
+  }
+}
+.search-container {
+  max-width: 600px;
+  margin: 0 auto 45px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.search-container label {
+  color: #f1f5f9;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 15px 18px;
+  border: 1px solid #2b3b52;
+  border-radius: 10px;
+  background: #171f2d;
+  color: #f1f5f9;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.search-container input::placeholder {
+  color: #94a3b8;
+}
+
+.search-container input:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+@media (max-width: 600px) {
+  .search-container {
+    margin-bottom: 35px;
+  }
+}
+.no-results {
+  text-align: center;
+  padding: 35px 20px;
+  margin-bottom: 35px;
+  background: #171f2d;
+  border: 1px solid #2b3b52;
+  border-radius: 12px;
+}
+
+.no-results p {
+  color: #f1f5f9;
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.no-results span {
+  color: #a1a7b4;
+  font-size: 14px;
+}
