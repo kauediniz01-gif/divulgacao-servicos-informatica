@@ -1,0 +1,20 @@
+
+# Python
+backend/.venv/
+backend/__pycache__/
+backend/*.pyc
+
+# Angular
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+
+# Ambiente e configurações locais
+.env
+.env.*
+!.env.example
+
+# Sistema operacional e editor
+.DS_Store
+Thumbs.db
+.vscode/
