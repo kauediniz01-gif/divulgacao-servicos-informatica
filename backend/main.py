@@ -15,7 +15,7 @@ app.add_middleware(
     "http://localhost:4200",
     "http://192.168.18.9:4200"
 ],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["GET"],
     allow_headers=["*"],
 )
@@ -39,35 +39,39 @@ def status():
 def listar_categorias():
     conexao = conectar()
 
-    categorias = conexao.execute("""
-        SELECT id_categoria, nome, descricao
-        FROM categorias
-        ORDER BY nome
-    """).fetchall()
+    try:
+        categorias = conexao.execute("""
+            SELECT id_categoria, nome, descricao
+            FROM categorias
+            ORDER BY nome
+        """).fetchall()
 
-    conexao.close()
+        return [dict(categoria) for categoria in categorias]
 
-    return [dict(categoria) for categoria in categorias]
+    finally:
+        conexao.close()
 
 
 @app.get("/servicos")
 def listar_servicos():
     conexao = conectar()
 
-    servicos = conexao.execute("""
-        SELECT
-            s.id_servico,
-            s.nome,
-            s.descricao,
-            s.categoria_id,
-            c.nome AS categoria
-        FROM servicos s
-        INNER JOIN categorias c
-            ON s.categoria_id = c.id_categoria
-        WHERE s.ativo = 1
-        ORDER BY c.nome, s.nome
-    """).fetchall()
+    try:
+        servicos = conexao.execute("""
+            SELECT
+                s.id_servico,
+                s.nome,
+                s.descricao,
+                s.categoria_id,
+                c.nome AS categoria
+            FROM servicos s
+            INNER JOIN categorias c
+                ON s.categoria_id = c.id_categoria
+            WHERE s.ativo = 1
+            ORDER BY c.nome, s.nome
+        """).fetchall()
 
-    conexao.close()
+        return [dict(servico) for servico in servicos]
 
-    return [dict(servico) for servico in servicos]
+    finally:
+        conexao.close()
