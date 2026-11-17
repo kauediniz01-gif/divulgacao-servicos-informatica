@@ -1,14 +1,26 @@
 
 import os
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from database import conectar
+from database import conectar, liberar_conexao, iniciar_pool, encerrar_pool
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    iniciar_pool()
+    try:
+        yield
+    finally:
+        encerrar_pool()
+
 
 app = FastAPI(
     title="API - Divulgação de Serviços de Informática",
     description="API para disponibilizar os serviços de montagem e manutenção de computadores.",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan,
 )
 
 origens_permitidas = [
@@ -28,7 +40,7 @@ if origens_hospedadas:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origens_permitidas,
-    allow_origin_regex=r"^http://(localhost|127\.0\.0\.1):\d+$",
+    allow_origin_regex=r"^http://(localhost|127\\.0\\.0\\.1):\\d+$",
     allow_credentials=False,
     allow_methods=["GET"],
     allow_headers=["*"],
@@ -63,7 +75,7 @@ def listar_categorias():
         return [dict(categoria) for categoria in categorias]
 
     finally:
-        conexao.close()
+        liberar_conexao(conexao)
 
 
 @app.get("/servicos")
@@ -88,4 +100,4 @@ def listar_servicos():
         return [dict(servico) for servico in servicos]
 
     finally:
-        conexao.close()
+        liberar_conexao(conexao)
