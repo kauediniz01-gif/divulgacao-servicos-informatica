@@ -1,21 +1,47 @@
 
+import os
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from database import conectar
+from database import conectar, liberar_conexao, iniciar_pool, encerrar_pool
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    iniciar_pool()
+    try:
+        yield
+    finally:
+        encerrar_pool()
+
 
 app = FastAPI(
     title="API - Divulgação de Serviços de Informática",
     description="API para disponibilizar os serviços de montagem e manutenção de computadores.",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan,
 )
+
+origens_permitidas = [
+    "http://localhost:4200",
+    "http://192.168.18.9:4200"
+]
+
+origens_hospedadas = os.getenv("FRONTEND_URL", "")
+
+if origens_hospedadas:
+    origens_permitidas.extend(
+        origem.strip()
+        for origem in origens_hospedadas.split(",")
+        if origem.strip()
+    )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-    "http://localhost:4200",
-    "http://192.168.18.9:4200"
-],
-    allow_credentials=True,
+    allow_origins=origens_permitidas,
+    allow_origin_regex=r"^http://(localhost|127\.0\.0\.1):\d+$",
+    allow_credentials=False,
     allow_methods=["GET"],
     allow_headers=["*"],
 )
@@ -39,35 +65,39 @@ def status():
 def listar_categorias():
     conexao = conectar()
 
-    categorias = conexao.execute("""
-        SELECT id_categoria, nome, descricao
-        FROM categorias
-        ORDER BY nome
-    """).fetchall()
+    try:
+        categorias = conexao.execute("""
+            SELECT id_categoria, nome, descricao
+            FROM categorias
+            ORDER BY nome
+        """).fetchall()
 
-    conexao.close()
+        return [dict(categoria) for categoria in categorias]
 
-    return [dict(categoria) for categoria in categorias]
+    finally:
+        liberar_conexao(conexao)
 
 
 @app.get("/servicos")
 def listar_servicos():
     conexao = conectar()
 
-    servicos = conexao.execute("""
-        SELECT
-            s.id_servico,
-            s.nome,
-            s.descricao,
-            s.categoria_id,
-            c.nome AS categoria
-        FROM servicos s
-        INNER JOIN categorias c
-            ON s.categoria_id = c.id_categoria
-        WHERE s.ativo = 1
-        ORDER BY c.nome, s.nome
-    """).fetchall()
+    try:
+        servicos = conexao.execute("""
+            SELECT
+                s.id_servico,
+                s.nome,
+                s.descricao,
+                s.categoria_id,
+                c.nome AS categoria
+            FROM servicos s
+            INNER JOIN categorias c
+                ON s.categoria_id = c.id_categoria
+            WHERE s.ativo = 1
+            ORDER BY c.nome, s.nome
+        """).fetchall()
 
-    conexao.close()
+        return [dict(servico) for servico in servicos]
 
-    return [dict(servico) for servico in servicos]
+    finally:
+        liberar_conexao(conexao)
