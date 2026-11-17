@@ -1,0 +1,65 @@
+
+<section class="services" id="servicos">
+  <div class="section-heading">
+    <span class="tag">O QUE EU FAÇO</span>
+    <h2>Nossos serviços</h2>
+    <p>Encontre o serviço ideal para o seu computador.</p>
+  </div>
+
+  <div *ngIf="carregando" class="section-heading">
+    <p>Carregando serviços...</p>
+  </div>
+
+  <div *ngIf="erro" class="section-heading">
+    <p>{{ erro }}</p>
+  </div>
+
+  <div class="search-container">
+    <label for="pesquisa-servico">Pesquisar serviço</label>
+
+    <input
+      id="pesquisa-servico"
+      type="search"
+      placeholder="Digite o nome do serviço"
+      [(ngModel)]="termoPesquisa"
+    >
+  </div>
+
+  <div
+    *ngIf="!carregando && !erro && termoPesquisa.trim() && !temResultadosPesquisa()"
+    class="no-results"
+  >
+    <p>Nenhum serviço encontrado.</p>
+    <span>Tente pesquisar por outro nome ou descrição.</span>
+  </div>
+
+  <ng-container *ngFor="let categoria of categorias">
+    <div
+      *ngIf="temServicosNaCategoria(categoria.nome)"
+      class="category-group"
+    >
+      <h3 class="category-title">{{ categoria.nome }}</h3>
+
+      <p class="category-description">
+        {{ categoria.descricao }}
+      </p>
+
+      <div class="service-grid">
+        <article
+          class="service-card"
+          *ngFor="let servico of servicosPorCategoria(categoria.nome)"
+        >
+          <div class="service-icon" aria-hidden="true">▣</div>
+          <h3>{{ servico.nome }}</h3>
+          <p>{{ servico.descricao }}</p>
+        </article>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="contact-buttons">
+    <a routerLink="/contato" class="btn-primary">
+      Entrar em contato
+    </a>
+  </div>
+</section>

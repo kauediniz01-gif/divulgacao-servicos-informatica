@@ -1,118 +1,38 @@
 
 <header class="header">
-  <a href="#" class="logo">INFO<span>TECH</span></a>
+  <a routerLink="/inicio" class="logo" aria-label="InfoTech - Página inicial">
+    INFO<span>TECH</span>
+  </a>
 
-  <nav>
-    <a href="#inicio">Início</a>
-    <a href="#servicos">Serviços</a>
-    <a href="#contato">Contato</a>
+  <nav aria-label="Navegação principal">
+    <a
+      routerLink="/inicio"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+    >
+      Início
+    </a>
+
+    <a
+      routerLink="/servicos"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+    >
+      Serviços
+    </a>
+
+    <a
+      routerLink="/contato"
+      routerLinkActive="active"
+      ariaCurrentWhenActive="page"
+    >
+      Contato
+    </a>
   </nav>
 </header>
 
 <main>
-  <section class="hero" id="inicio">
-    <div class="hero-content">
-      <span class="tag">MONTAGEM E MANUTENÇÃO DE COMPUTADORES</span>
-
-      <h1>Seu computador<br>em boas mãos.</h1>
-
-      <p>
-        Soluções em informática para cuidar, melhorar
-        e dar vida nova ao seu computador.
-      </p>
-
-      <div class="hero-buttons">
-        <a href="#servicos" class="btn-primary">Ver serviços</a>
-        <a href="#contato" class="btn-secondary">Entrar em contato</a>
-      </div>
-    </div>
-  </section>
-
-  <section class="services" id="servicos">
-    <div class="section-heading">
-      <span class="tag">O QUE EU FAÇO</span>
-      <h2>Serviços de informática</h2>
-      <p>Conheça as soluções disponíveis para seu computador.</p>
-    </div>
-
-    <div *ngIf="carregando" class="section-heading">
-      <p>Carregando serviços...</p>
-    </div>
-
-    <div *ngIf="erro" class="section-heading">
-      <p>{{ erro }}</p>
-    </div>
-<div class="search-container">
-  <label for="pesquisa-servico">Pesquisar serviço</label>
-
-  <input
-    id="pesquisa-servico"
-    type="search"
-    placeholder="Digite o nome do serviço"
-    [value]="termoPesquisa"
-    (input)="termoPesquisa = $any($event.target).value"
-  >
-</div>
-<div
-  *ngIf="!carregando && !erro && termoPesquisa.trim() && !temResultadosPesquisa()"
-  class="no-results"
->
-  <p>Nenhum serviço encontrado.</p>
-  <span>Tente pesquisar por outro nome ou descrição.</span>
-</div>
-    <ng-container *ngFor="let categoria of categorias">
-  <div
-    *ngIf="temServicosNaCategoria(categoria.nome)"
-    class="category-group"
-  >
-      <h3 class="category-title">{{ categoria.nome }}</h3>
-
-      <p class="category-description">
-        {{ categoria.descricao }}
-      </p>
-
-      <div class="service-grid">
-        <article
-          class="service-card"
-          *ngFor="let servico of servicosPorCategoria(categoria.nome)"
-        >
-          <div class="service-icon">▣</div>
-          <h3>{{ servico.nome }}</h3>
-          <p>{{ servico.descricao }}</p>
-        </article>
-      </div>
-    </div>
-    </ng-container>
-
-  </section>
-
-  <section class="contact" id="contato">
-    <span class="tag">VAMOS CONVERSAR?</span>
-    <h2>Precisa de ajuda com seu computador?</h2>
-    <p>Entre em contato para conhecer os serviços e solicitar um orçamento.</p>
-
-    <div class="contact-buttons">
-
-  <a
-    href="https://wa.me/5511943033717?text=Ol%C3%A1%21%20Encontrei%20seu%20site%20e%20gostaria%20de%20solicitar%20informa%C3%A7%C3%B5es%20sobre%20seus%20servi%C3%A7os%20de%20inform%C3%A1tica."
-    target="_blank"
-    rel="noopener noreferrer"
-    class="btn-primary"
-  >
-    Falar pelo WhatsApp
-  </a>
-
-  <a
-    href="https://www.instagram.com/ks.informatica.ar/"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="btn-primary"
-  >
-    Ver Instagram
-  </a>
-
-</div>
-  </section>
+  <router-outlet></router-outlet>
 </main>
 
 <footer>

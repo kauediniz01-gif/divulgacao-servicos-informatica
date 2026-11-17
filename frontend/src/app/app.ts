@@ -1,79 +1,11 @@
 
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ServicosService, Servico, Categoria } from './servicos';
+import { Component } from '@angular/core';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule],
+  imports: [RouterLink, RouterLinkActive, RouterOutlet],
   templateUrl: './app.html',
-  styleUrl: './app.css'
 })
-export class App implements OnInit {
-
-  categorias: Categoria[] = [];
-  servicos: Servico[] = [];
-  termoPesquisa = '';
-
-  carregando = true;
-  erro = '';
-
-  constructor(private servicosService: ServicosService) {}
-
-  ngOnInit(): void {
-    this.servicosService.listarCategorias().subscribe({
-      next: (dados) => {
-        this.categorias = dados;
-      },
-      error: (erro) => {
-        console.error('Erro ao carregar categorias:', erro);
-        this.erro = 'Não foi possível carregar as categorias.';
-        this.carregando = false;
-      }
-    });
-
-    this.servicosService.listarServicos().subscribe({
-      next: (dados) => {
-        this.servicos = dados;
-        this.carregando = false;
-      },
-      error: (erro) => {
-        console.error('Erro ao carregar serviços:', erro);
-        this.erro = 'Não foi possível carregar os serviços.';
-        this.carregando = false;
-      }
-    });
-  }
-
-  
-servicosPorCategoria(nomeCategoria: string): Servico[] {
-  const pesquisa = this.termoPesquisa
-    .trim()
-    .toLowerCase();
-
-  return this.servicos.filter(servico => {
-    const pertenceCategoria =
-      servico.categoria === nomeCategoria;
-
-    const correspondePesquisa =
-      servico.nome.toLowerCase().includes(pesquisa) ||
-      servico.descricao.toLowerCase().includes(pesquisa);
-
-    return pertenceCategoria && correspondePesquisa;
-  });
-}
-temServicosNaCategoria(nomeCategoria: string): boolean {
-  return this.servicosPorCategoria(nomeCategoria).length > 0;
-}
-
-temResultadosPesquisa(): boolean {
-  const pesquisa = this.termoPesquisa.trim().toLowerCase();
-
-  return this.servicos.some(servico =>
-    servico.nome.toLowerCase().includes(pesquisa) ||
-    servico.descricao.toLowerCase().includes(pesquisa)
-  );
-}
-
-}
+export class App {}
