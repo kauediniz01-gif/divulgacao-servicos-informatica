@@ -1,16 +1,19 @@
-
 import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import conectar, liberar_conexao, iniciar_pool, encerrar_pool
+from init_db import criar_tabelas
+from seed import cadastrar_dados
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     iniciar_pool()
     try:
+        criar_tabelas()
+        cadastrar_dados()
         yield
     finally:
         encerrar_pool()
@@ -40,7 +43,7 @@ if origens_hospedadas:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origens_permitidas,
-    allow_origin_regex=r"^http://(localhost|127\.0\.0\.1):\d+$",
+    allow_origin_regex=r"^http://(localhost|127\.0.0.1):\d+$",
     allow_credentials=False,
     allow_methods=["GET"],
     allow_headers=["*"],
@@ -64,16 +67,13 @@ def status():
 @app.get("/categorias")
 def listar_categorias():
     conexao = conectar()
-
     try:
         categorias = conexao.execute("""
             SELECT id_categoria, nome, descricao
             FROM categorias
             ORDER BY nome
         """).fetchall()
-
         return [dict(categoria) for categoria in categorias]
-
     finally:
         liberar_conexao(conexao)
 
@@ -81,7 +81,6 @@ def listar_categorias():
 @app.get("/servicos")
 def listar_servicos():
     conexao = conectar()
-
     try:
         servicos = conexao.execute("""
             SELECT
@@ -96,8 +95,6 @@ def listar_servicos():
             WHERE s.ativo = 1
             ORDER BY c.nome, s.nome
         """).fetchall()
-
         return [dict(servico) for servico in servicos]
-
     finally:
         liberar_conexao(conexao)
