@@ -426,3 +426,46 @@ button:focus-visible,
     gap: 15px;
   }
 }
+
+/* Apresentação do profissional */
+.about {
+  padding: 82px 8%;
+  background: #10131b;
+  border-top: 1px solid #252a35;
+}
+
+.about-content {
+  max-width: 820px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about h2 {
+  margin: 16px 0;
+  color: #f5f5f5;
+  font-size: clamp(28px, 4vw, 38px);
+}
+
+.about p {
+  max-width: 720px;
+  margin: 0 auto 16px;
+  color: #a1a7b4;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.about .btn-primary {
+  min-height: 44px;
+  margin-top: 14px;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .about {
+    padding: 65px 6%;
+  }
+
+  .about p {
+    font-size: 15px;
+  }
+}
