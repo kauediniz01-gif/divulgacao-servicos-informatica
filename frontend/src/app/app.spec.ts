@@ -1,6 +1,7 @@
 
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideRouter } from '@angular/router';
 import { App } from './app';
 
 describe('App', () => {
@@ -10,6 +11,9 @@ describe('App', () => {
         App,
         HttpClientTestingModule
       ],
+      providers: [
+        provideRouter([])
+      ]
     }).compileComponents();
   });
 
