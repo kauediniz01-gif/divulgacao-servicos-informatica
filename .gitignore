@@ -21,3 +21,10 @@ Thumbs.db
 
 # Banco de dados local
 backend/database.db
+
+# Cobertura de testes Python
+backend/.coverage
+backend/htmlcov/
+
+# Arquivos temporários dos testes Python
+backend/tests/__pycache__/
