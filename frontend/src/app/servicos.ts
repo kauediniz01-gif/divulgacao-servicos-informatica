@@ -2,6 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../environments/environment';
 
 export interface Categoria {
   id_categoria: number;
@@ -22,7 +23,7 @@ export interface Servico {
 })
 export class ServicosService {
 
-  private apiUrl = 'http://192.168.18.9:8000';
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

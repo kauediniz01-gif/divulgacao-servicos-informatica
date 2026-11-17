@@ -1,4 +1,5 @@
 
+import os
 from database import conectar
 
 
@@ -36,52 +37,70 @@ def cadastrar_dados():
         ("Troca de placa-mãe", "Substituição da placa-mãe, considerando a compatibilidade com os demais componentes.", "Upgrade de hardware"),
     ]
 
+    postgres = bool(os.getenv("DATABASE_URL"))
+    parametro = "%s" if postgres else "?"
     conexao = conectar()
-    cursor = conexao.cursor()
 
-    cursor.executemany("""
-        INSERT OR IGNORE INTO categorias (nome, descricao)
-        VALUES (?, ?)
-    """, categorias)
+    try:
+        cursor = conexao.cursor()
 
-    for nome, descricao, categoria in servicos:
-        cursor.execute("""
-            SELECT id_categoria
-            FROM categorias
-            WHERE nome = ?
-        """, (categoria,))
-
-        resultado = cursor.fetchone()
-
-        if resultado is None:
-            raise ValueError(f"Categoria não encontrada: {categoria}")
-
-        categoria_id = resultado["id_categoria"]
-
-        cursor.execute("""
-            SELECT id_servico
-            FROM servicos
-            WHERE nome = ? AND categoria_id = ?
-        """, (nome, categoria_id))
-
-        servico_existente = cursor.fetchone()
-
-        if servico_existente:
-            cursor.execute("""
-                UPDATE servicos
-                SET descricao = ?
-                WHERE id_servico = ?
-            """, (descricao, servico_existente["id_servico"]))
-
+        if postgres:
+            cursor.executemany("""
+                INSERT INTO categorias (nome, descricao)
+                VALUES (%s, %s)
+                ON CONFLICT (nome) DO NOTHING
+            """, categorias)
         else:
-            cursor.execute("""
-                INSERT INTO servicos (nome, descricao, categoria_id)
-                VALUES (?, ?, ?)
-            """, (nome, descricao, categoria_id))
-    conexao.commit()
-    conexao.close()
+            cursor.executemany("""
+                INSERT OR IGNORE INTO categorias (nome, descricao)
+                VALUES (?, ?)
+            """, categorias)
 
-    print("Categorias e serviços atualizados com sucesso!")
+        for nome, descricao, categoria in servicos:
+            cursor.execute(f"""
+                SELECT id_categoria
+                FROM categorias
+                WHERE nome = {parametro}
+            """, (categoria,))
+
+            resultado = cursor.fetchone()
+
+            if resultado is None:
+                raise ValueError(f"Categoria não encontrada: {categoria}")
+
+            categoria_id = resultado["id_categoria"]
+
+            cursor.execute(f"""
+                SELECT id_servico
+                FROM servicos
+                WHERE nome = {parametro}
+                AND categoria_id = {parametro}
+            """, (nome, categoria_id))
+
+            servico_existente = cursor.fetchone()
+
+            if servico_existente:
+                cursor.execute(f"""
+                    UPDATE servicos
+                    SET descricao = {parametro}
+                    WHERE id_servico = {parametro}
+                """, (descricao, servico_existente["id_servico"]))
+            else:
+                cursor.execute(f"""
+                    INSERT INTO servicos (nome, descricao, categoria_id)
+                    VALUES ({parametro}, {parametro}, {parametro})
+                """, (nome, descricao, categoria_id))
+
+        conexao.commit()
+
+        print("Categorias e serviços atualizados com sucesso!")
+
+    except Exception:
+        conexao.rollback()
+        raise
+
+    finally:
+        conexao.close()
 
 
 if __name__ == "__main__":

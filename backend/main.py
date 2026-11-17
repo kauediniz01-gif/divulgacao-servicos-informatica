@@ -1,4 +1,6 @@
 
+import os
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import conectar
@@ -9,12 +11,24 @@ app = FastAPI(
     version="1.0.0"
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=[
+origens_permitidas = [
     "http://localhost:4200",
     "http://192.168.18.9:4200"
-],
+]
+
+origens_hospedadas = os.getenv("FRONTEND_URL", "")
+
+if origens_hospedadas:
+    origens_permitidas.extend(
+        origem.strip()
+        for origem in origens_hospedadas.split(",")
+        if origem.strip()
+    )
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origens_permitidas,
+    allow_origin_regex=r"^http://(localhost|127\.0\.0\.1):\d+$",
     allow_credentials=False,
     allow_methods=["GET"],
     allow_headers=["*"],
