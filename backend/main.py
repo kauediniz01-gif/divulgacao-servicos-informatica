@@ -40,7 +40,7 @@ if origens_hospedadas:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origens_permitidas,
-    allow_origin_regex=r"^http://(localhost|127\\.0\\.0\\.1):\\d+$",
+    allow_origin_regex=r"^http://(localhost|127\.0\.0\.1):\d+$",
     allow_credentials=False,
     allow_methods=["GET"],
     allow_headers=["*"],
